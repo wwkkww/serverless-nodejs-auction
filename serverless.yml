@@ -9,8 +9,10 @@ provider:
   memorySize: 256
   stage: ${opt:stage, 'dev'}
   region: ap-southeast-1
-  iamRoleStatements:
-    - ${file(iam/AuctionsTableIAM.yml):AuctionsTableIAM}
+  iam:
+    role:
+      statements:
+        - ${file(iam/AuctionsTableIAM.yml):AuctionsTableIAM}
   
 resources:
   Resources:
