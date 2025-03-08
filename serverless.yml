@@ -9,6 +9,8 @@ provider:
   memorySize: 256
   stage: ${opt:stage, 'dev'}
   region: ap-southeast-1
+  environment:
+    AUCTIONS_TABLE_NAME: ${self:custom.AuctionsTable.name}
   iam:
     role:
       statements:
@@ -27,5 +29,8 @@ functions:
           path: /auction
 
 custom:
+  AuctionsTable:
+    name: !Ref AuctionsTable
+    arn: !GetAtt AuctionsTable.Arn
   bundle:
     linting: false
