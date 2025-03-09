@@ -15,6 +15,9 @@ async function createAuction(event, context) {
     title: body.title,
     status: "OPEN",
     createdAt: new Date().toISOString(),
+    highestBid: {
+      amount: 0,
+    }
   };
 
   try {
