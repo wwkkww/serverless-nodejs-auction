@@ -5,6 +5,7 @@ import commonMiddleware from "../lib/commonMiddleware.js";
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 export async function getAuctionById(id) {
+  console.log("getAuctionById 💗");
   let auction;
   try {
     const result = await dynamodb
@@ -28,10 +29,11 @@ export async function getAuctionById(id) {
 }
 
 async function getAuction(event, context) {
-  
   const { id } = event.pathParameters;
-  const auction = getAuctionById(id);
-  
+  const auction = await getAuctionById(id);
+  console.log("id >>", id);
+  console.log("auction >>", auction);
+
   return {
     statusCode: 200,
     body: JSON.stringify(auction),

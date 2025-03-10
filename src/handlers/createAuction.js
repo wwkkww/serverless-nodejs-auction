@@ -10,11 +10,15 @@ async function createAuction(event, context) {
   // const body = JSON.parse(event.body);
   const body = event.body;
 
+  const endDate = new Date();
+  // endDate.setDays(endDate.getDays() + 1); // end bid after 1 day
+  endDate.setHours(endDate.getHours() + 1); // end bid after 1 hour
   const auction = {
     id: uuid(),
     title: body.title,
     status: "OPEN",
     createdAt: new Date().toISOString(),
+    endingAt: endDate.toISOString(),
     highestBid: {
       amount: 0,
     }
