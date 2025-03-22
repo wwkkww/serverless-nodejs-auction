@@ -1,6 +1,9 @@
 import AWS from "aws-sdk";
 import createError from "http-errors";
+import validator from "@middy/validator";
+import { transpileSchema } from '@middy/validator/transpile'
 import commonMiddleware from "../lib/commonMiddleware.js";
+import getAuctionsSchema from "../lib/schemas/getAuctionsSchema.js";
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -34,4 +37,18 @@ async function getAuctions(event, context) {
   };
 }
 
-export const handler = commonMiddleware(getAuctions);
+// export const handler = commonMiddleware(getAuctions).use(
+//   validator({
+//     inputSchema: getAuctionsSchema,
+//     ajvOptions: {
+//       useDefaults: true,
+//       strict: false,
+//     },
+//   })
+// );
+
+export const handler = commonMiddleware(getAuctions).use(
+  validator({
+    eventSchema: transpileSchema(getAuctionsSchema)
+  })
+);
