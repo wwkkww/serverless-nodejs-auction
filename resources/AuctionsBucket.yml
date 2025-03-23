@@ -1,0 +1,27 @@
+AuctionsBucket:
+  Type: AWS::S3::Bucket
+  Properties:
+    BucketName: ${self:custom.AuctionsBucket.name}
+    PublicAccessBlockConfiguration:
+      BlockPublicAcls: false
+    OwnershipControls:
+      Rules:
+        - ObjectOwnership: ObjectWriter
+    # NotificationConfiguration:
+    #   LambdaConfigurations:
+    #     - Event: s3:ObjectCreated:*
+    #       Function: arn:aws:sns:#{AWS::Region}:#{AWS::AccountId}:processAuctions-${self:provider.stage}
+
+# allow public to view auction images
+AuctionsBucketPolicy:
+  Type: AWS::S3::BucketPolicy
+  Properties:
+    Bucket: !Ref AuctionsBucket
+    PolicyDocument:
+      Statement:
+        - Sid: PublicRead
+          Effect: Allow
+          Principal: "*"
+          Action: 
+            - s3:GetObject
+          Resource: arn:aws:s3:::${self:custom.AuctionsBucket.name}/*
