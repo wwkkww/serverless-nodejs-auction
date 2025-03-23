@@ -1,7 +1,7 @@
 import AWS from "aws-sdk";
 import createError from "http-errors";
 import validator from "@middy/validator";
-import { transpileSchema } from '@middy/validator/transpile'
+import { transpileSchema } from "@middy/validator/transpile";
 import commonMiddleware from "../lib/commonMiddleware.js";
 import getAuctionsSchema from "../lib/schemas/getAuctionsSchema.js";
 
@@ -9,6 +9,8 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 async function getAuctions(event, context) {
   const { status } = event.queryStringParameters;
+  // console.log("event", event.requestContext);
+  // const { email } = event.requestContext.authorizer;  
   let auctions;
 
   let params = {
@@ -21,7 +23,7 @@ async function getAuctions(event, context) {
     ExpressionAttributeNames: {
       "#status": "status",
     },
-  }
+  };
   try {
     const results = await dynamodb.query(params).promise();
 
@@ -49,6 +51,6 @@ async function getAuctions(event, context) {
 
 export const handler = commonMiddleware(getAuctions).use(
   validator({
-    eventSchema: transpileSchema(getAuctionsSchema)
+    eventSchema: transpileSchema(getAuctionsSchema),
   })
 );

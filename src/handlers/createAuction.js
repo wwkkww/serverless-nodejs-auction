@@ -12,6 +12,8 @@ async function createAuction(event, context) {
   // ** handle by httpJsonBodyParser
   // const body = JSON.parse(event.body);
   const body = event.body;
+  console.log("event", event.requestContext);
+  const { email } = event.requestContext.authorizer; 
 
   const endDate = new Date();
   // endDate.setDays(endDate.getDays() + 1); // end bid after 1 day
@@ -24,7 +26,8 @@ async function createAuction(event, context) {
     endingAt: endDate.toISOString(),
     highestBid: {
       amount: 0,
-    }
+    },
+    seller: email,
   };
 
   try {
