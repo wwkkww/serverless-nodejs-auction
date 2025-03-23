@@ -7,6 +7,11 @@ AuctionsBucket:
     OwnershipControls:
       Rules:
         - ObjectOwnership: ObjectWriter
+    LifecycleConfiguration:
+      Rules:
+        - Id: ExpirePictures
+          Status: Enabled
+          ExpirationInDays: 1
     # NotificationConfiguration:
     #   LambdaConfigurations:
     #     - Event: s3:ObjectCreated:*
